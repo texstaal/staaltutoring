@@ -75,7 +75,9 @@ function buildFinance2(lang: LanguageId): Course {
         id: "lu3", number: 3,
         title: "Comparative Financial Analysis",
         description: "Techniques for comparing financial performance across time and between companies. Horizontal analysis compares two years using absolute and relative changes. Vertical (common-size) analysis expresses every line item as a percentage of a base total. Base-year analysis tracks multiple years against a single reference year to distinguish one-off events from ongoing trends.",
-        videoSrc: `/videos/${lang}/finance2/lu3.mp4`,
+        videoSrc: lang === "nl"
+          ? "https://iframe.mediadelivery.net/embed/673137/70a3a411-ab1b-4145-9eab-f3edf7a81dfd"
+          : `${R2}/${lang}/finance2/lu3.mp4`,
       },
       {
         id: "lu4", number: 4,

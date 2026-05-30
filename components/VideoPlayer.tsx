@@ -57,8 +57,35 @@ const ExitFullscreenIcon = () => (
   </svg>
 );
 
+/* ── Bunny Stream iframe player ─────────────────────────────────────────────── */
+function BunnyPlayer({ src }: { src: string }) {
+  return (
+    <div className="video-wrapper relative w-full rounded-2xl overflow-hidden bg-black aspect-video select-none shadow-sm">
+      <iframe
+        src={`${src}?autoplay=false&preload=false&responsive=true`}
+        className="absolute inset-0 w-full h-full"
+        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+        allowFullScreen
+      />
+      {/* Watermark */}
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-10" aria-hidden="true">
+        <p
+          className="text-white/20 font-semibold text-sm sm:text-base tracking-widest uppercase rotate-[-20deg] select-none whitespace-nowrap"
+          style={{ textShadow: "0 1px 3px rgba(0,0,0,0.6)" }}
+        >
+          Confidential – Do not share
+        </p>
+      </div>
+    </div>
+  );
+}
+
 /* ── component ──────────────────────────────────────────────────────────────── */
 export default function VideoPlayer({ src }: { src: string }) {
+  // Bunny Stream embed URLs → use iframe player
+  if (src.includes("mediadelivery.net") || src.includes("b-cdn.net")) {
+    return <BunnyPlayer src={src} />;
+  }
   const videoRef      = useRef<HTMLVideoElement>(null);
   const containerRef  = useRef<HTMLDivElement>(null);
   const hideTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
