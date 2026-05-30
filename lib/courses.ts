@@ -1,5 +1,10 @@
 export type LanguageId = "en" | "nl";
 
+// ─── Video CDN (Cloudflare R2) ────────────────────────────────────────────────
+// Upload new videos to R2 bucket "staal-tutoring-videos" at the same path structure:
+//   nl/finance2/lu1.mp4, en/finance2/lu1.mp4, etc.
+const R2 = "https://pub-d3fb5aaddbac42038fca278a198932ca.r2.dev";
+
 export const languages = [
   { id: "en" as LanguageId, label: "English", flag: "🇬🇧" },
   { id: "nl" as LanguageId, label: "Dutch",   flag: "🇳🇱" },
@@ -58,7 +63,7 @@ function buildFinance2(lang: LanguageId): Course {
         id: "lu1", number: 1,
         title: "Risk & Financial Leverage",
         description: "Covers systematic vs. unsystematic risk, key business risk categories, and risk management frameworks. Introduces financial leverage: how the debt-to-equity mix affects ROE, the Rate of Return Trap, and the tax shield benefit of debt. Includes DuPont Analysis (ROE = Net Profit Margin × Asset Turnover × Financial Leverage) and asset financing options (short-term vs. long-term liabilities vs. equity).",
-        videoSrc: `/videos/${lang}/finance2/lu1.mp4`,
+        videoSrc: `${R2}/${lang}/finance2/lu1.mp4`,
       },
       {
         id: "lu2", number: 2,
