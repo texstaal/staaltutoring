@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 
 /* ── helpers ────────────────────────────────────────────────────────────────── */
 function fmt(s: number) {
@@ -12,46 +12,46 @@ function fmt(s: number) {
 
 /* ── icons ──────────────────────────────────────────────────────────────────── */
 const PlayIcon = () => (
-  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+  <svg className="w-5 h-5 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor">
     <path d="M8 5.14v14l11-7-11-7z" />
   </svg>
 );
 const PauseIcon = () => (
-  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+  <svg className="w-5 h-5 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor">
     <rect x="6" y="4" width="4" height="16" rx="1.5" />
     <rect x="14" y="4" width="4" height="16" rx="1.5" />
   </svg>
 );
 const SkipBackIcon = () => (
-  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+  <svg className="w-4 h-4 sm:w-3.5 sm:h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
     <polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 .49-3.85" />
   </svg>
 );
 const SkipFwdIcon = () => (
-  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+  <svg className="w-4 h-4 sm:w-3.5 sm:h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
     <polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-.49-3.85" />
   </svg>
 );
 const VolumeIcon = () => (
-  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+  <svg className="w-5 h-5 sm:w-4 sm:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
     <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
     <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
   </svg>
 );
 const MuteIcon = () => (
-  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+  <svg className="w-5 h-5 sm:w-4 sm:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
     <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
     <line x1="23" y1="9" x2="17" y2="15" /><line x1="17" y1="9" x2="23" y2="15" />
   </svg>
 );
 const FullscreenIcon = () => (
-  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+  <svg className="w-5 h-5 sm:w-4 sm:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
     <polyline points="15 3 21 3 21 9" /><polyline points="9 21 3 21 3 15" />
     <line x1="21" y1="3" x2="14" y2="10" /><line x1="3" y1="21" x2="10" y2="14" />
   </svg>
 );
 const ExitFullscreenIcon = () => (
-  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+  <svg className="w-5 h-5 sm:w-4 sm:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
     <polyline points="4 14 10 14 10 20" /><polyline points="20 10 14 10 14 4" />
     <line x1="10" y1="14" x2="3" y2="21" /><line x1="21" y1="3" x2="14" y2="10" />
   </svg>
@@ -86,6 +86,7 @@ export default function VideoPlayer({ src }: { src: string }) {
   if (src.includes("mediadelivery.net") || src.includes("b-cdn.net")) {
     return <BunnyPlayer src={src} />;
   }
+
   const videoRef      = useRef<HTMLVideoElement>(null);
   const containerRef  = useRef<HTMLDivElement>(null);
   const hideTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -100,13 +101,13 @@ export default function VideoPlayer({ src }: { src: string }) {
   const [bufEnd,       setBufEnd]       = useState(0);
 
   /* ── control visibility ──────────────────────────────────────────────────── */
-  function resetHide() {
+  const resetHide = useCallback(() => {
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
     setShowControls(true);
     hideTimerRef.current = setTimeout(() => {
       if (!videoRef.current?.paused) setShowControls(false);
     }, 3000);
-  }
+  }, []);
 
   /* ── actions ─────────────────────────────────────────────────────────────── */
   function skip(sec: number) {
@@ -157,6 +158,18 @@ export default function VideoPlayer({ src }: { src: string }) {
     v.currentTime = pct * duration;
   }
 
+  /* ── seek on progress bar touch (mobile) ────────────────────────────────── */
+  function handleTouchSeek(e: React.TouchEvent<HTMLDivElement>) {
+    e.stopPropagation(); // don't bubble to click-capture layer
+    const v = videoRef.current;
+    if (!v || !duration) return;
+    const rect  = e.currentTarget.getBoundingClientRect();
+    const touch = e.touches[0];
+    const pct   = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+    v.currentTime = pct * duration;
+    resetHide();
+  }
+
   /* ── keyboard (capture phase overrides browser defaults) ─────────────────── */
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -196,7 +209,7 @@ export default function VideoPlayer({ src }: { src: string }) {
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    const onPlay     = () => setIsPlaying(true);
+    const onPlay     = () => { setIsPlaying(true); resetHide(); };
     const onPause    = () => { setIsPlaying(false); setShowControls(true); if (hideTimerRef.current) clearTimeout(hideTimerRef.current); };
     const onTime     = () => { setCurrentTime(v.currentTime); if (v.buffered.length) setBufEnd(v.buffered.end(v.buffered.length - 1)); };
     const onMeta     = () => setDuration(v.duration);
@@ -213,7 +226,7 @@ export default function VideoPlayer({ src }: { src: string }) {
       v.removeEventListener("loadedmetadata", onMeta);
       v.removeEventListener("volumechange",   onVolume);
     };
-  }, []);
+  }, [resetHide]);
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
   const bufPct   = duration > 0 ? (bufEnd    / duration) * 100 : 0;
@@ -224,6 +237,7 @@ export default function VideoPlayer({ src }: { src: string }) {
       className="video-wrapper relative w-full rounded-2xl overflow-hidden bg-black aspect-video select-none shadow-sm"
       onMouseMove={resetHide}
       onMouseEnter={resetHide}
+      onTouchStart={resetHide}
       style={{ cursor: showControls ? "default" : "none" }}
     >
       {/* Video — no native controls */}
@@ -263,57 +277,68 @@ export default function VideoPlayer({ src }: { src: string }) {
         {/* Gradient bg */}
         <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
 
-        <div className="relative px-4 pb-3 space-y-2.5">
+        <div className="relative px-3 sm:px-4 pb-3 sm:pb-3 space-y-1 sm:space-y-2.5">
 
           {/* ── Progress bar ──────────────────────────────────────────────── */}
+          {/* Tall invisible hit area for easy touch targeting */}
           <div
-            className="group relative h-1 hover:h-1.5 transition-all duration-150 cursor-pointer"
+            className="group relative flex items-center cursor-pointer py-2 sm:py-1.5"
             onClick={handleSeek}
+            onTouchStart={handleTouchSeek}
+            onTouchMove={handleTouchSeek}
           >
-            <div className="absolute inset-0 bg-white/20 rounded-full" />
-            <div className="absolute inset-y-0 left-0 bg-white/30 rounded-full" style={{ width: `${bufPct}%` }} />
-            <div className="absolute inset-y-0 left-0 bg-[#4b58ff] rounded-full" style={{ width: `${progress}%` }} />
-            <div
-              className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-              style={{ left: `calc(${progress}% - 6px)` }}
-            />
+            {/* Visual track */}
+            <div className="relative w-full h-1 sm:group-hover:h-1.5 transition-all duration-150">
+              <div className="absolute inset-0 bg-white/20 rounded-full" />
+              <div className="absolute inset-y-0 left-0 bg-white/30 rounded-full" style={{ width: `${bufPct}%` }} />
+              <div className="absolute inset-y-0 left-0 bg-[#4b58ff] rounded-full" style={{ width: `${progress}%` }} />
+              <div
+                className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                style={{ left: `calc(${progress}% - 6px)` }}
+              />
+            </div>
           </div>
 
           {/* ── Button row ────────────────────────────────────────────────── */}
           <div className="flex items-center justify-between">
 
             {/* Left: play, skip, volume, time */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5 sm:gap-1">
               <button onClick={togglePlay} aria-label={isPlaying ? "Pause" : "Play"}
-                className="w-8 h-8 flex items-center justify-center text-white hover:text-white/70 transition-colors">
+                className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center text-white hover:text-white/70 transition-colors">
                 {isPlaying ? <PauseIcon /> : <PlayIcon />}
               </button>
 
               <button onClick={() => skip(-5)} aria-label="Skip back 5 seconds"
-                className="flex items-center gap-0.5 px-1.5 h-8 text-white text-[11px] font-bold hover:text-white/70 transition-colors">
+                className="flex items-center gap-0.5 px-2 h-10 sm:h-8 text-white text-xs sm:text-[11px] font-bold hover:text-white/70 transition-colors">
                 <SkipBackIcon /><span>5</span>
               </button>
 
               <button onClick={() => skip(5)} aria-label="Skip forward 5 seconds"
-                className="flex items-center gap-0.5 px-1.5 h-8 text-white text-[11px] font-bold hover:text-white/70 transition-colors">
+                className="flex items-center gap-0.5 px-2 h-10 sm:h-8 text-white text-xs sm:text-[11px] font-bold hover:text-white/70 transition-colors">
                 <span>5</span><SkipFwdIcon />
               </button>
 
               <button onClick={toggleMute} aria-label={isMuted ? "Unmute" : "Mute"}
-                className="w-7 h-8 flex items-center justify-center text-white hover:text-white/70 transition-colors">
+                className="w-10 h-10 sm:w-7 sm:h-8 flex items-center justify-center text-white hover:text-white/70 transition-colors">
                 {isMuted ? <MuteIcon /> : <VolumeIcon />}
               </button>
 
-              <span className="text-white/70 text-[11px] font-medium tabular-nums ml-1 whitespace-nowrap">
+              <span className="text-white/70 text-[11px] font-medium tabular-nums ml-1 whitespace-nowrap hidden sm:inline">
                 {fmt(currentTime)} / {fmt(duration)}
               </span>
             </div>
 
-            {/* Right: fullscreen */}
-            <button onClick={toggleFullscreen} aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-              className="w-7 h-8 flex items-center justify-center text-white hover:text-white/70 transition-colors">
-              {isFullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
-            </button>
+            {/* Right: time (mobile) + fullscreen */}
+            <div className="flex items-center gap-1">
+              <span className="text-white/70 text-[11px] font-medium tabular-nums whitespace-nowrap sm:hidden">
+                {fmt(currentTime)}
+              </span>
+              <button onClick={toggleFullscreen} aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                className="w-10 h-10 sm:w-7 sm:h-8 flex items-center justify-center text-white hover:text-white/70 transition-colors">
+                {isFullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
+              </button>
+            </div>
 
           </div>
         </div>

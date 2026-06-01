@@ -6,6 +6,7 @@ import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import VideoPlayer from "@/components/VideoPlayer";
+import MarkComplete from "@/components/MarkComplete";
 
 export default async function LUPage({
   params,
@@ -86,8 +87,11 @@ export default async function LUPage({
 
         {/* Title + description */}
         <div className="mt-7">
-          <h1 className="text-xl font-bold text-neutral-900 tracking-tight">{lu.title}</h1>
-          <p className="mt-2 text-sm text-neutral-500 leading-[1.75]">{lu.description}</p>
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <h1 className="text-xl font-bold text-neutral-900 tracking-tight">{lu.title}</h1>
+            <MarkComplete lang={lang} courseId={courseId} luId={lu.id} />
+          </div>
+          <p className="mt-3 text-sm text-neutral-500 leading-[1.75]">{lu.description}</p>
         </div>
 
         {/* ── Prev / Next ───────────────────────────────────────────────────── */}

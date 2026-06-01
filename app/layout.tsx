@@ -20,11 +20,13 @@ export const metadata: Metadata = {
     description: "Online video lectures and course materials for Finance & Business students.",
     siteName: "Staal Tutoring",
     type: "website",
+    images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "Staal Tutoring" }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Staal Tutoring",
     description: "Online video lectures and course materials for Finance & Business students.",
+    images: ["/og-image.svg"],
   },
 };
 
