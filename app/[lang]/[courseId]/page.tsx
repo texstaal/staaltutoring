@@ -8,6 +8,7 @@ import Link from "next/link";
 import CoursePasswordGate from "@/components/CoursePasswordGate";
 import LUCard from "@/components/LUCard";
 import DocumentDownload from "@/components/DocumentDownload";
+import CourseProgressBar from "@/components/CourseProgressBar";
 
 export default async function CoursePage({
   params,
@@ -104,6 +105,9 @@ export default async function CoursePage({
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base font-semibold text-neutral-900">Learning Units</h2>
             <span className="text-xs text-neutral-400">{course.learningUnits.length} units</span>
+          </div>
+          <div className="mb-3">
+            <CourseProgressBar lang={lang} courseId={courseId} total={course.learningUnits.length} />
           </div>
           <div className="space-y-1.5">
             {course.learningUnits.map((lu) => (

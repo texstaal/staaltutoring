@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import Footer from "@/components/Footer";
 
 export default function NotFound() {
   return (
@@ -67,9 +68,11 @@ export default function NotFound() {
       </div>
 
       {/* Footer hint */}
-      <p className="text-center text-xs text-neutral-300 pb-8">
+      <p className="text-center text-xs text-neutral-300 pb-4">
         Grade: 0 / 10 — topic not found
       </p>
+
+      <Footer />
     </main>
   );
 }

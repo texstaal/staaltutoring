@@ -3,6 +3,7 @@ import { catalog, getLanguage } from "@/lib/courses";
 import Image from "next/image";
 import Link from "next/link";
 import CourseCard from "@/components/CourseCard";
+import Footer from "@/components/Footer";
 
 export default async function CoursesPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -18,6 +19,16 @@ export default async function CoursesPage({ params }: { params: Promise<{ lang: 
           <Image src="/logo.svg" alt="Staal Tutoring" width={110} height={44} />
         </Link>
         <div className="flex items-center gap-1">
+          <Link href="/about"
+            className="text-xs font-medium text-neutral-400 hover:text-[#4b58ff] transition-colors duration-200
+                       rounded-lg px-2.5 py-1.5 hover:bg-[#4b58ff]/5 hidden sm:block">
+            About
+          </Link>
+          <Link href="/pricing"
+            className="text-xs font-medium text-neutral-400 hover:text-[#4b58ff] transition-colors duration-200
+                       rounded-lg px-2.5 py-1.5 hover:bg-[#4b58ff]/5 hidden sm:block">
+            Pricing
+          </Link>
           <Link
             href="/contact"
             className="text-xs font-medium text-neutral-400 hover:text-[#4b58ff] transition-colors duration-200
@@ -55,6 +66,7 @@ export default async function CoursesPage({ params }: { params: Promise<{ lang: 
           ))}
         </div>
       </section>
+      <Footer />
     </main>
   );
 }
