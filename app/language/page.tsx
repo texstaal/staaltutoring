@@ -36,6 +36,10 @@ export default function LanguagePage() {
       </div>
 
       <p className="mt-12 text-xs text-neutral-300">You can switch languages at any time.</p>
+
+      <Link href="/contact" className="mt-4 text-xs text-neutral-300 hover:text-[#4b58ff] transition-colors duration-200">
+        Contact
+      </Link>
     </main>
   );
 }

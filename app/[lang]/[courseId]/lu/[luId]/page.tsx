@@ -34,18 +34,30 @@ export default async function LUPage({
           <Image src="/logo.svg" alt="Staal Tutoring" width={110} height={44} />
         </Link>
 
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-neutral-400">
-          <Link href={`/${lang}`} className="hover:text-[#4b58ff] transition-colors duration-200 hidden sm:block">
-            {"Courses"}
+        <div className="flex items-center gap-3">
+          {/* Breadcrumb */}
+          <nav className="flex items-center gap-2 text-sm text-neutral-400">
+            <Link href={`/${lang}`} className="hover:text-[#4b58ff] transition-colors duration-200 hidden sm:block">
+              {"Courses"}
+            </Link>
+            <span className="hidden sm:block">/</span>
+            <Link href={`/${lang}/${courseId}`} className="hover:text-[#4b58ff] transition-colors duration-200">
+              {course.title}
+            </Link>
+            <span>/</span>
+            <span className="text-neutral-700 font-medium">LU {lu.number}</span>
+          </nav>
+
+          <span className="text-neutral-200 hidden sm:block">·</span>
+
+          <Link
+            href="/contact"
+            className="text-xs font-medium text-neutral-400 hover:text-[#4b58ff] transition-colors duration-200
+                       rounded-lg px-2.5 py-1.5 hover:bg-[#4b58ff]/5 hidden sm:block"
+          >
+            Contact
           </Link>
-          <span className="hidden sm:block">/</span>
-          <Link href={`/${lang}/${courseId}`} className="hover:text-[#4b58ff] transition-colors duration-200">
-            {course.title}
-          </Link>
-          <span>/</span>
-          <span className="text-neutral-700 font-medium">LU {lu.number}</span>
-        </nav>
+        </div>
       </header>
 
       <div className="max-w-4xl mx-auto px-6 py-10">

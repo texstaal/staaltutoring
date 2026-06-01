@@ -42,16 +42,25 @@ export default async function CoursePage({
         <Link href="/language">
           <Image src="/logo.svg" alt="Staal Tutoring" width={110} height={44} />
         </Link>
-        <Link
-          href={`/${lang}`}
-          className="text-sm text-neutral-400 hover:text-[#4b58ff] transition-colors duration-200
-                     flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 hover:bg-[#4b58ff]/5"
-        >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-          Courses
-        </Link>
+        <div className="flex items-center gap-1">
+          <Link
+            href="/contact"
+            className="text-xs font-medium text-neutral-400 hover:text-[#4b58ff] transition-colors duration-200
+                       rounded-lg px-2.5 py-1.5 hover:bg-[#4b58ff]/5"
+          >
+            Contact
+          </Link>
+          <Link
+            href={`/${lang}`}
+            className="text-sm text-neutral-400 hover:text-[#4b58ff] transition-colors duration-200
+                       flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 hover:bg-[#4b58ff]/5"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Courses
+          </Link>
+        </div>
       </header>
 
       <div className="max-w-3xl mx-auto px-6 py-12 space-y-14">

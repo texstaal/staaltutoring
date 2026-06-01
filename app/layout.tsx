@@ -13,8 +13,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Private Screening",
-  description: "Password-protected video library",
+  title: "Staal Tutoring",
+  description: "Online video lectures and course materials for Finance & Business students. Learn at your own pace with structured Learning Units.",
+  openGraph: {
+    title: "Staal Tutoring",
+    description: "Online video lectures and course materials for Finance & Business students.",
+    siteName: "Staal Tutoring",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Staal Tutoring",
+    description: "Online video lectures and course materials for Finance & Business students.",
+  },
 };
 
 export default function RootLayout({
