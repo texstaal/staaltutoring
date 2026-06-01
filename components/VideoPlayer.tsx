@@ -12,12 +12,12 @@ function fmt(s: number) {
 
 /* ── icons ──────────────────────────────────────────────────────────────────── */
 const PlayIcon = () => (
-  <svg className="w-5 h-5 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor">
+  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
     <path d="M8 5.14v14l11-7-11-7z" />
   </svg>
 );
 const PauseIcon = () => (
-  <svg className="w-5 h-5 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor">
+  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
     <rect x="6" y="4" width="4" height="16" rx="1.5" />
     <rect x="14" y="4" width="4" height="16" rx="1.5" />
   </svg>
@@ -57,6 +57,18 @@ const ExitFullscreenIcon = () => (
   </svg>
 );
 
+/* ── Watermark ───────────────────────────────────────────────────────────────── */
+const Watermark = () => (
+  <div className="absolute inset-0 pointer-events-none flex items-center justify-center" aria-hidden="true">
+    <p
+      className="text-white/20 font-semibold text-sm sm:text-base tracking-widest uppercase rotate-[-20deg] select-none whitespace-nowrap"
+      style={{ textShadow: "0 1px 3px rgba(0,0,0,0.6)" }}
+    >
+      Confidential – Do not share
+    </p>
+  </div>
+);
+
 /* ── Bunny Stream iframe player ─────────────────────────────────────────────── */
 function BunnyPlayer({ src }: { src: string }) {
   return (
@@ -67,26 +79,16 @@ function BunnyPlayer({ src }: { src: string }) {
         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
       />
-      {/* Watermark */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-10" aria-hidden="true">
-        <p
-          className="text-white/20 font-semibold text-sm sm:text-base tracking-widest uppercase rotate-[-20deg] select-none whitespace-nowrap"
-          style={{ textShadow: "0 1px 3px rgba(0,0,0,0.6)" }}
-        >
-          Confidential – Do not share
-        </p>
+      {/* z-10 so it sits above the iframe */}
+      <div className="absolute inset-0 z-10">
+        <Watermark />
       </div>
     </div>
   );
 }
 
-/* ── component ──────────────────────────────────────────────────────────────── */
-export default function VideoPlayer({ src }: { src: string }) {
-  // Bunny Stream embed URLs → use iframe player
-  if (src.includes("mediadelivery.net") || src.includes("b-cdn.net")) {
-    return <BunnyPlayer src={src} />;
-  }
-
+/* ── Custom HTML5 player (all hooks live here, no early returns) ─────────────── */
+function CustomPlayer({ src }: { src: string }) {
   const videoRef      = useRef<HTMLVideoElement>(null);
   const containerRef  = useRef<HTMLDivElement>(null);
   const hideTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -160,7 +162,7 @@ export default function VideoPlayer({ src }: { src: string }) {
 
   /* ── seek on progress bar touch (mobile) ────────────────────────────────── */
   function handleTouchSeek(e: React.TouchEvent<HTMLDivElement>) {
-    e.stopPropagation(); // don't bubble to click-capture layer
+    e.stopPropagation();
     const v = videoRef.current;
     if (!v || !duration) return;
     const rect  = e.currentTarget.getBoundingClientRect();
@@ -179,11 +181,11 @@ export default function VideoPlayer({ src }: { src: string }) {
       const focused = c.contains(document.activeElement) || document.activeElement === v;
       const inFS    = document.fullscreenElement === c;
       if (!focused && !inFS) return;
-      if (e.key === "ArrowLeft")           { e.preventDefault(); e.stopImmediatePropagation(); skip(-5); }
-      else if (e.key === "ArrowRight")     { e.preventDefault(); e.stopImmediatePropagation(); skip(5);  }
-      else if (e.key === " " || e.key === "k") { e.preventDefault(); togglePlay(); }
-      else if (e.key === "f")              { e.preventDefault(); toggleFullscreen(); }
-      else if (e.key === "m")              { e.preventDefault(); toggleMute(); }
+      if (e.key === "ArrowLeft")                 { e.preventDefault(); e.stopImmediatePropagation(); skip(-5); }
+      else if (e.key === "ArrowRight")           { e.preventDefault(); e.stopImmediatePropagation(); skip(5);  }
+      else if (e.key === " " || e.key === "k")   { e.preventDefault(); togglePlay(); }
+      else if (e.key === "f")                    { e.preventDefault(); toggleFullscreen(); }
+      else if (e.key === "m")                    { e.preventDefault(); toggleMute(); }
     }
     document.addEventListener("keydown", onKey, { capture: true });
     return () => document.removeEventListener("keydown", onKey, { capture: true });
@@ -209,16 +211,16 @@ export default function VideoPlayer({ src }: { src: string }) {
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    const onPlay     = () => { setIsPlaying(true); resetHide(); };
-    const onPause    = () => { setIsPlaying(false); setShowControls(true); if (hideTimerRef.current) clearTimeout(hideTimerRef.current); };
-    const onTime     = () => { setCurrentTime(v.currentTime); if (v.buffered.length) setBufEnd(v.buffered.end(v.buffered.length - 1)); };
-    const onMeta     = () => setDuration(v.duration);
-    const onVolume   = () => setIsMuted(v.muted);
-    v.addEventListener("play",            onPlay);
-    v.addEventListener("pause",           onPause);
-    v.addEventListener("timeupdate",      onTime);
-    v.addEventListener("loadedmetadata",  onMeta);
-    v.addEventListener("volumechange",    onVolume);
+    const onPlay   = () => { setIsPlaying(true); resetHide(); };
+    const onPause  = () => { setIsPlaying(false); setShowControls(true); if (hideTimerRef.current) clearTimeout(hideTimerRef.current); };
+    const onTime   = () => { setCurrentTime(v.currentTime); if (v.buffered.length) setBufEnd(v.buffered.end(v.buffered.length - 1)); };
+    const onMeta   = () => setDuration(v.duration);
+    const onVolume = () => setIsMuted(v.muted);
+    v.addEventListener("play",           onPlay);
+    v.addEventListener("pause",          onPause);
+    v.addEventListener("timeupdate",     onTime);
+    v.addEventListener("loadedmetadata", onMeta);
+    v.addEventListener("volumechange",   onVolume);
     return () => {
       v.removeEventListener("play",           onPlay);
       v.removeEventListener("pause",          onPause);
@@ -240,7 +242,7 @@ export default function VideoPlayer({ src }: { src: string }) {
       onTouchStart={resetHide}
       style={{ cursor: showControls ? "default" : "none" }}
     >
-      {/* Video — no native controls */}
+      {/* Video */}
       <video
         ref={videoRef}
         className="w-full h-full object-contain"
@@ -250,22 +252,16 @@ export default function VideoPlayer({ src }: { src: string }) {
         <source src={src} type="video/mp4" />
       </video>
 
-      {/* Click-capture layer (z-10): single = play/pause, double = fullscreen.
-          Lives below the controls overlay (z-30) so control clicks are unaffected. */}
+      {/* Click layer (z-10): single = play/pause, double = fullscreen */}
       <div
         className="absolute inset-0 z-10"
         onClick={handleAreaClick}
         onContextMenu={(e) => e.preventDefault()}
       />
 
-      {/* Watermark (z-20, pointer-events-none) */}
-      <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center" aria-hidden="true">
-        <p
-          className="text-white/20 font-semibold text-sm sm:text-base tracking-widest uppercase rotate-[-20deg] select-none whitespace-nowrap"
-          style={{ textShadow: "0 1px 3px rgba(0,0,0,0.6)" }}
-        >
-          Confidential – Do not share
-        </p>
+      {/* Watermark (z-20) */}
+      <div className="absolute inset-0 z-20 pointer-events-none">
+        <Watermark />
       </div>
 
       {/* Controls overlay (z-30) */}
@@ -274,20 +270,18 @@ export default function VideoPlayer({ src }: { src: string }) {
           showControls ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        {/* Gradient bg */}
+        {/* Gradient */}
         <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
 
-        <div className="relative px-3 sm:px-4 pb-3 sm:pb-3 space-y-1 sm:space-y-2.5">
+        <div className="relative px-3 sm:px-4 pb-3 space-y-1 sm:space-y-2.5">
 
-          {/* ── Progress bar ──────────────────────────────────────────────── */}
-          {/* Tall invisible hit area for easy touch targeting */}
+          {/* Progress bar — tall invisible area for easy touch targeting */}
           <div
             className="group relative flex items-center cursor-pointer py-2 sm:py-1.5"
             onClick={handleSeek}
             onTouchStart={handleTouchSeek}
             onTouchMove={handleTouchSeek}
           >
-            {/* Visual track */}
             <div className="relative w-full h-1 sm:group-hover:h-1.5 transition-all duration-150">
               <div className="absolute inset-0 bg-white/20 rounded-full" />
               <div className="absolute inset-y-0 left-0 bg-white/30 rounded-full" style={{ width: `${bufPct}%` }} />
@@ -299,7 +293,7 @@ export default function VideoPlayer({ src }: { src: string }) {
             </div>
           </div>
 
-          {/* ── Button row ────────────────────────────────────────────────── */}
+          {/* Button row */}
           <div className="flex items-center justify-between">
 
             {/* Left: play, skip, volume, time */}
@@ -329,7 +323,7 @@ export default function VideoPlayer({ src }: { src: string }) {
               </span>
             </div>
 
-            {/* Right: time (mobile) + fullscreen */}
+            {/* Right: time (mobile only) + fullscreen */}
             <div className="flex items-center gap-1">
               <span className="text-white/70 text-[11px] font-medium tabular-nums whitespace-nowrap sm:hidden">
                 {fmt(currentTime)}
@@ -345,4 +339,12 @@ export default function VideoPlayer({ src }: { src: string }) {
       </div>
     </div>
   );
+}
+
+/* ── Public export — picks the right player, no hooks at top level ───────────── */
+export default function VideoPlayer({ src }: { src: string }) {
+  if (src.includes("mediadelivery.net") || src.includes("b-cdn.net")) {
+    return <BunnyPlayer src={src} />;
+  }
+  return <CustomPlayer src={src} />;
 }
