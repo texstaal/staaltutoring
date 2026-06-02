@@ -79,8 +79,8 @@ function BunnyPlayer({ src }: { src: string }) {
         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
       />
-      {/* z-10 so it sits above the iframe */}
-      <div className="absolute inset-0 z-10">
+      {/* z-10, pointer-events-none so clicks pass through to the iframe */}
+      <div className="absolute inset-0 z-10 pointer-events-none">
         <Watermark />
       </div>
     </div>
