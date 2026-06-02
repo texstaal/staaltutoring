@@ -33,9 +33,16 @@ export default function AboutPage() {
       <div className="flex-1 max-w-2xl mx-auto w-full px-6 py-14">
 
         {/* Intro */}
-        <div className="flex items-center gap-5 mb-10">
-          <div className="shrink-0 w-16 h-16 rounded-2xl bg-[#4b58ff]/8 flex items-center justify-center">
-            <span className="text-[#4b58ff] text-xl font-bold">TS</span>
+        <div className="flex items-center gap-6 mb-10">
+          <div className="shrink-0 w-20 h-20 rounded-full overflow-hidden border border-neutral-100 shadow-sm">
+            <Image
+              src="/tex.png"
+              alt="Tex Staal"
+              width={80}
+              height={80}
+              className="w-full h-full object-cover object-top"
+              priority
+            />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-neutral-900 tracking-tight">Tex Staal</h1>
