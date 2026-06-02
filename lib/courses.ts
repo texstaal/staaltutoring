@@ -83,7 +83,7 @@ function buildFinance2(lang: LanguageId): Course {
         id: "lu4", number: 4,
         title: "Working Capital Management",
         description: "Explains Net Working Capital (NWC) and Net Operating Working Capital (NOWC) and why negative NOWC can be a strategic advantage. Introduces the Cash Conversion Cycle (CCC = IHP + ACP − PDP) with all related turnover and period formulas. Strategies for shortening the CCC: reducing inventory holding and collection periods, extending payment deferral, and the trade-offs involved.",
-        videoSrc: `/videos/${lang}/finance2/lu4.mp4`,
+        videoSrc: "https://iframe.mediadelivery.net/embed/673137/83d8f72f-be1f-4461-8023-846e53f35771",
       },
       {
         id: "lu5", number: 5,
