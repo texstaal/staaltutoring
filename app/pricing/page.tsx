@@ -150,7 +150,7 @@ export default function PricingPage() {
           </svg>
           <p className="text-xs text-neutral-500 leading-relaxed">
             All packages include access to the online video lectures on this platform.
-            Not sure which option fits you? <Link href="/contact" className="text-[#4b58ff] hover:underline font-medium">Send a message</Link> and we&apos;ll figure it out together.
+            Not sure which option fits you? <Link href="/contact" className="text-[#4b58ff] hover:underline font-medium">Send a message</Link>{" "}and we&apos;ll figure it out together.
           </p>
         </div>
 

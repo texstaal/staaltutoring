@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "About – Staal Tutoring",
-  description: "Meet Tex Staal — Hotelschool graduate, Black Belt in Finance, and tutor.",
+  description: "Meet Tex Staal, Hotelschool graduate, black belt in Finance, and tutor.",
 };
 
 export default function AboutPage() {
@@ -47,12 +47,12 @@ export default function AboutPage() {
         <section className="mb-10">
           <p className="text-sm text-neutral-600 leading-[1.85] mb-4">
             Hi, I&apos;m Tex. I started at the Hotelschool in 2021 and graduated at the beginning of last year.
-            I completed the Finance programme and earned a <span className="font-semibold text-neutral-800">Black Belt Certificate</span> — the highest distinction awarded for Finance at the Hotelschool.
+            I completed the Finance programme and earned a black belt certificate, the highest distinction awarded for Finance at the Hotelschool.
           </p>
           <p className="text-sm text-neutral-600 leading-[1.85]">
             Throughout my studies I regularly helped fellow students with Finance, and for a little over a year now
             I&apos;ve been doing this officially as a tutoring side business. The video lectures and course materials on this
-            platform are designed to give you the clearest possible explanation of every topic — the way I wish someone had explained it to me.
+            platform are designed to give you the clearest possible explanation of every topic, the way I wish someone had explained it to me.
           </p>
         </section>
 
@@ -66,8 +66,8 @@ export default function AboutPage() {
                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                 </svg>
               ),
-              label: "Black Belt Certificate",
-              sub: "Finance — Hotelschool",
+              label: "Black belt certificate",
+              sub: "Finance, Hotelschool",
             },
             {
               icon: (

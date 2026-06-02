@@ -13,7 +13,7 @@ export default async function CoursesPage({ params }: { params: Promise<{ lang: 
   const courses = catalog[language.id];
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white flex flex-col">
       <header className="border-b border-neutral-100 px-6 py-4 flex items-center justify-between bg-white">
         <Link href="/language">
           <Image src="/logo.svg" alt="Staal Tutoring" width={110} height={44} />
@@ -50,7 +50,7 @@ export default async function CoursesPage({ params }: { params: Promise<{ lang: 
         </div>
       </header>
 
-      <section className="max-w-3xl mx-auto px-6 py-14">
+      <section className="flex-1 max-w-3xl mx-auto w-full px-6 py-14">
         <div className="mb-10">
           <p className="text-xs font-semibold tracking-widest uppercase text-[#4b58ff] mb-2">
             {language.label}
