@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 
+
 export const metadata = {
   title: "Contact – Staal Tutoring",
   description: "Get in touch with Tex Staal for questions about courses or tutoring.",
@@ -31,10 +32,17 @@ export default function ContactPage() {
       <div className="flex-1 flex items-center justify-center px-4 py-16">
         <div className="w-full max-w-[360px]">
 
-          {/* Avatar / initials */}
+          {/* Avatar / photo */}
           <div className="mb-8 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#4b58ff]/8 mb-5">
-              <span className="text-[#4b58ff] text-xl font-bold">TS</span>
+            <div className="inline-block w-20 h-20 rounded-full overflow-hidden border border-neutral-100 shadow-sm mb-5">
+              <Image
+                src="/tex.png"
+                alt="Tex Staal"
+                width={80}
+                height={80}
+                className="w-full h-full object-cover object-top"
+                priority
+              />
             </div>
             <h1 className="text-xl font-bold text-neutral-900 tracking-tight">Tex Staal</h1>
             <p className="mt-1 text-sm text-neutral-400">Staal Tutoring</p>

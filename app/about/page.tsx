@@ -34,12 +34,12 @@ export default function AboutPage() {
 
         {/* Intro */}
         <div className="flex items-center gap-6 mb-10">
-          <div className="shrink-0 w-20 h-20 rounded-full overflow-hidden border border-neutral-100 shadow-sm">
+          <div className="shrink-0 w-24 h-24 rounded-full overflow-hidden border border-neutral-100 shadow-sm">
             <Image
               src="/tex.png"
               alt="Tex Staal"
-              width={80}
-              height={80}
+              width={96}
+              height={96}
               className="w-full h-full object-cover object-top"
               priority
             />
