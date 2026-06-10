@@ -95,7 +95,7 @@ function buildFinance2(lang: LanguageId): Course {
         id: "lu6", number: 6,
         title: "Investment Appraisal & Capital Budgeting",
         description: "Covers value creation principles, WACC (Weighted Average Cost of Capital), and the Time Value of Money (compounding and discounting, FV/PV formulas, semi-annual compounding). Evaluates four capital budgeting models: ARR, Payback Period, NPV, Profitability Index, and IRR. Includes terminal value (Gordon Growth Model), maximum investment calculations, and a comparison of each model's strengths and limitations.",
-        videoSrc: `/videos/${lang}/finance2/lu6.mp4`,
+        videoSrc: "https://iframe.mediadelivery.net/embed/673137/8088735c-272d-4a8c-9cec-631992733025",
       },
       {
         id: "lu7", number: 7,
